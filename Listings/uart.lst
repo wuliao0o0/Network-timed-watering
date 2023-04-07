@@ -1,0 +1,100 @@
+C51 COMPILER V9.54   UART                                                                  10/12/2022 19:33:30 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE UART
+OBJECT MODULE PLACED IN .\Objects\uart.obj
+COMPILER INVOKED BY: D:\keil\C51\BIN\C51.EXE uart.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\uart.ls
+                    -t) OBJECT(.\Objects\uart.obj)
+
+line level    source
+
+   1          #include <REGX51.H>
+   2          #include "delay.h"
+   3          void Uart_Init(void)
+   4          {               
+   5   1      //      PCON &= 0x7F;           //波特率不倍速
+   6   1      //      SCON = 0x50;            //8位数据,可变波特率
+   7   1      //      TMOD &= 0x0F;           //清除定时器1模式位
+   8   1      //      TMOD |= 0x20;           //设定定时器1为8位自动重装方式
+   9   1      //      TL1 = 0xfd;             //设定定时初值
+  10   1      //      TH1 = 0xfd;             //设定定时初值
+  11   1      //      ET1 = 0;                //禁止定时器1中断
+  12   1      //      TR1 = 1;                //启动定时器1
+  13   1      //      REN=1;
+  14   1      //      ES=1;
+  15   1      //      EA=1;
+  16   1              
+  17   1              PCON |= 0x80;           //使能波特率倍速位SMOD
+  18   1              SCON = 0x50;            //8位数据,可变波特率
+  19   1              TMOD &= 0x0F;           //清除定时器1模式位
+  20   1              TMOD |= 0x20;           //设定定时器1为8位自动重装方式
+  21   1              TL1 = 0xFA;             //设定定时初值
+  22   1              TH1 = 0xFA;             //设定定时器重装值
+  23   1              ET1 = 0;                //禁止定时器1中断
+  24   1              TR1 = 1;                //启动定时器1
+  25   1              REN=1;
+  26   1              ES=1;
+  27   1              EA=1;
+  28   1      }
+  29          
+  30          void Uart_SendChar(unsigned char Word)
+  31          {
+  32   1              SBUF=Word;
+  33   1              while(!TI);
+  34   1              TI=0;
+  35   1      }
+  36          
+  37          void Uart_SendStr(unsigned char *Str)
+  38          {       
+  39   1              while(*Str!='\0')
+  40   1              {
+  41   2                      Uart_SendChar(*Str);
+  42   2                      Delay5us();
+  43   2                      Str++;
+  44   2              }
+  45   1      }
+  46          
+  47          void Uart_SendCmd(unsigned char *cmd)
+  48          {
+  49   1              while(*cmd!='\0')
+  50   1              {
+  51   2                      Uart_SendChar(*cmd);
+  52   2                      Delay5us();
+  53   2                      cmd++;
+  54   2              }
+C51 COMPILER V9.54   UART                                                                  10/12/2022 19:33:30 PAGE 2   
+
+  55   1              Uart_SendChar('\r');
+  56   1              Delay5us();
+  57   1              Uart_SendChar('\n');
+  58   1              delay(3000);
+  59   1      }
+  60          /*
+  61          void Usart() interrupt 4
+  62          {
+  63                  u8 receiveData;
+  64          
+  65                  receiveData=SBUF;//��ȥ���յ�������
+  66                  RI = 0;//��������жϱ�־λ
+  67                  SBUF=receiveData;//�����յ������ݷ��뵽���ͼĴ���
+  68                  while(!TI);                      //�ȴ������������
+  69                  TI=0;                                            //���������ɱ�־λ
+  70          }
+  71          */
+  72          
+  73          
+  74          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    132    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       6
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

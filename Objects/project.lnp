@@ -1,0 +1,11 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\DELAY.obj",
+".\Objects\DS1302.obj",
+".\Objects\OLED.obj",
+".\Objects\I2C.obj",
+".\Objects\uart.obj",
+".\Objects\public.obj",
+".\Objects\ESP8266.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 
