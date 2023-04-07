@@ -1,1 +1,3 @@
-# Network-timed-watering
+# 网络定时浇水
+#芯片是12c5a60s2
+#网络用的是atk-esp8266
